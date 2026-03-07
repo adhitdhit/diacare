@@ -1,4 +1,6 @@
+# dependencies
 
+node_modules/
 
 # build output
 
@@ -28,4 +30,7 @@ Thumbs.db
 .vscode/
 .idea/
 
+# misc
 
+*.local
+node_modules
