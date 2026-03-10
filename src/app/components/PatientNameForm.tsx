@@ -3,7 +3,9 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { UserCircle } from 'lucide-react';
+
+// @ts-ignore
+import logoImage from '../../assets/logo.png';
 
 interface PatientNameFormProps {
   onSubmit: (name: string) => void;
@@ -23,10 +25,14 @@ export function PatientNameForm({ onSubmit }: PatientNameFormProps) {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center">
-            <UserCircle className="w-10 h-10 text-white" />
+          <div className="mx-auto -mb-10 w-56 h-56 flex items-center justify-center overflow-hidden">
+            <img 
+              src={logoImage} 
+              alt="DiaCares Logo" 
+              className="w-full h-full object-contain scale-[2]"
+            />
           </div>
-          <CardTitle>DiaCARE (Diabetes Care System)</CardTitle>
+          <CardTitle>DiaCARES (Diabetes Care System)</CardTitle>
           <CardDescription>
             Masukkan Informasi Pasien
           </CardDescription>
@@ -42,6 +48,7 @@ export function PatientNameForm({ onSubmit }: PatientNameFormProps) {
                 value={patientName}
                 onChange={(e) => setPatientName(e.target.value)}
                 required
+                className="h-12 text-base"
               />
             </div>
             <Button type="submit" className="w-full">
