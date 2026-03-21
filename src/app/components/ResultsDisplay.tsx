@@ -14,7 +14,7 @@ interface ResultsDisplayProps {
 interface PredictionResult {
   hasDiabetes: boolean;
   riskScore: number;
-  riskLevel: 'Rendah' | 'Sedang' | 'Tinggi' | 'Sangat Tinggi';
+  riskLevel: 'Low' | 'Moderate' | 'High' | 'Very High';
   recommendations: string[];
 }
 
@@ -59,11 +59,11 @@ function calculatePrediction(params: DiabetesParameters): PredictionResult {
   // Normalize risk score to 0-100
   riskScore = Math.min(riskScore, 100);
 
-  let riskLevel: 'Rendah' | 'Sedang' | 'Tinggi' | 'Sangat Tinggi';
-  if (riskScore >= 70) riskLevel = 'Sangat Tinggi';
-  else if (riskScore >= 50) riskLevel = 'Tinggi';
-  else if (riskScore >= 30) riskLevel = 'Sedang';
-  else riskLevel = 'Rendah';
+  let riskLevel: 'Low' | 'Moderate' | 'High' | 'Very High';
+  if (riskScore >= 70) riskLevel = 'Very High';
+  else if (riskScore >= 50) riskLevel = 'High';
+  else if (riskScore >= 30) riskLevel = 'Moderate';
+  else riskLevel = 'Low';
 
   const hasDiabetes = riskScore >= 50;
 
@@ -86,7 +86,7 @@ function calculatePrediction(params: DiabetesParameters): PredictionResult {
   if (hasDiabetes) {
     recommendations.push('Jadwalkan pemeriksaan diabetes komprehensif dan tes HbA1c.');
     recommendations.push('Kembangkan rencana manajemen diabetes dengan penyedia layanan kesehatan Anda.');
-  } else if (riskLevel === 'Tinggi' || riskLevel === 'Sedang') {
+  } else if (riskLevel === 'High' || riskLevel === 'Moderate') {
     recommendations.push('Pemeriksaan kesehatan rutin setiap 6 bulan direkomendasikan.');
     recommendations.push('Pertahankan gaya hidup sehat: diet seimbang, olahraga teratur, manajemen stres.');
   } else {
@@ -133,9 +133,9 @@ export function ResultsDisplay({ patientName, parameters, onReset }: ResultsDisp
 
     // Risk Score Section
     const riskColor = 
-      result.riskLevel === 'Sangat Tinggi' ? [220, 38, 38] :
-      result.riskLevel === 'Tinggi' ? [234, 88, 12] :
-      result.riskLevel === 'Sedang' ? [202, 138, 4] :
+      result.riskLevel === 'Very High' ? [220, 38, 38] :
+      result.riskLevel === 'High' ? [234, 88, 12] :
+      result.riskLevel === 'Moderate' ? [202, 138, 4] :
       [22, 163, 74];
     
     pdf.setFillColor(riskColor[0], riskColor[1], riskColor[2]);
@@ -259,9 +259,9 @@ export function ResultsDisplay({ patientName, parameters, onReset }: ResultsDisp
               <div className="flex justify-between items-center">
                 <span className="font-medium">Diabetes Risk Score</span>
                 <span className={`text-2xl font-bold ${
-                  result.riskLevel === 'Sangat Tinggi' ? 'text-red-600' :
-                  result.riskLevel === 'Tinggi' ? 'text-orange-600' :
-                  result.riskLevel === 'Sedang' ? 'text-yellow-600' :
+                  result.riskLevel === 'Very High' ? 'text-red-600' :
+                  result.riskLevel === 'High' ? 'text-orange-600' :
+                  result.riskLevel === 'Moderate' ? 'text-yellow-600' :
                   'text-green-600'
                 }`}>
                   {result.riskScore}%
@@ -271,9 +271,9 @@ export function ResultsDisplay({ patientName, parameters, onReset }: ResultsDisp
             </div>
 
             <div className={`p-4 rounded-lg ${
-              result.riskLevel === 'Sangat Tinggi' ? 'bg-red-50 border border-red-200' :
-              result.riskLevel === 'Tinggi' ? 'bg-orange-50 border border-orange-200' :
-              result.riskLevel === 'Sedang' ? 'bg-yellow-50 border border-yellow-200' :
+              result.riskLevel === 'Very High' ? 'bg-red-50 border border-red-200' :
+              result.riskLevel === 'High' ? 'bg-orange-50 border border-orange-200' :
+              result.riskLevel === 'Moderate' ? 'bg-yellow-50 border border-yellow-200' :
               'bg-green-50 border border-green-200'
             }`}>
               <div className="flex items-center gap-2 mb-2">
@@ -293,22 +293,109 @@ export function ResultsDisplay({ patientName, parameters, onReset }: ResultsDisp
 
             <div className="space-y-3">
               <h3 className="font-semibold">Ringkasan Uji Klinis</h3>
-              <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="grid grid-cols-1 gap-3 text-sm">
                 <div className="p-3 bg-gray-50 rounded-lg">
-                  <p className="text-gray-600">Age</p>
-                  <p className="font-medium">{parameters.age} years</p>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-gray-600">Usia (Age)</p>
+                      <p className="font-medium">{parameters.age} tahun</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-gray-500">Nilai Ideal</p>
+                      <p className="text-xs text-green-600 font-medium">Risiko rendah &lt; 45 tahun</p>
+                    </div>
+                  </div>
                 </div>
+                
                 <div className="p-3 bg-gray-50 rounded-lg">
-                  <p className="text-gray-600">Glucose</p>
-                  <p className="font-medium">{parameters.glucose} mg/dL</p>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-gray-600">Glukosa (Glucose)</p>
+                      <p className="font-medium">{parameters.glucose} mg/dL</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-gray-500">Nilai Ideal</p>
+                      <p className="text-xs text-green-600 font-medium">70-99 mg/dL (puasa)</p>
+                    </div>
+                  </div>
                 </div>
+                
                 <div className="p-3 bg-gray-50 rounded-lg">
-                  <p className="text-gray-600">Blood Pressure</p>
-                  <p className="font-medium">{parameters.bloodPressure} mm Hg</p>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-gray-600">Tekanan Darah (Blood Pressure)</p>
+                      <p className="font-medium">{parameters.bloodPressure} mm Hg</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-gray-500">Nilai Ideal</p>
+                      <p className="text-xs text-green-600 font-medium">&lt; 80 mm Hg (diastolik)</p>
+                    </div>
+                  </div>
                 </div>
+                
                 <div className="p-3 bg-gray-50 rounded-lg">
-                  <p className="text-gray-600">BMI</p>
-                  <p className="font-medium">{parameters.bmi.toFixed(1)}</p>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-gray-600">BMI (Body Mass Index)</p>
+                      <p className="font-medium">{parameters.bmi.toFixed(1)}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-gray-500">Nilai Ideal</p>
+                      <p className="text-xs text-green-600 font-medium">18.5 - 24.9</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-gray-600">Insulin</p>
+                      <p className="font-medium">{parameters.insulin} µU/mL</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-gray-500">Nilai Ideal</p>
+                      <p className="text-xs text-green-600 font-medium">16-166 µU/mL</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-gray-600">Kehamilan (Pregnancies)</p>
+                      <p className="font-medium">{parameters.pregnancies} kali</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-gray-500">Keterangan</p>
+                      <p className="text-xs text-green-600 font-medium">Risiko meningkat &gt; 3 kali</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-gray-600">Ketebalan Kulit (Skin Thickness)</p>
+                      <p className="font-medium">{parameters.skinThickness} mm</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-gray-500">Nilai Ideal</p>
+                      <p className="text-xs text-green-600 font-medium">10-30 mm</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-gray-600">Riwayat Keluarga (Diabetes Pedigree)</p>
+                      <p className="font-medium">{parameters.diabetesPedigreeFunction.toFixed(3)}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-gray-500">Keterangan</p>
+                      <p className="text-xs text-green-600 font-medium">Risiko rendah &lt; 0.3</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
