@@ -14,7 +14,7 @@ interface ResultsDisplayProps {
 interface PredictionResult {
   hasDiabetes: boolean;
   riskScore: number;
-  riskLevel: 'Low' | 'Moderate' | 'High' | 'Very High';
+  riskLevel: 'Rendah' | 'Sedang' | 'Tinggi' | 'Sangat Tinggi';
   recommendations: string[];
 }
 
@@ -59,11 +59,11 @@ function calculatePrediction(params: DiabetesParameters): PredictionResult {
   // Normalize risk score to 0-100
   riskScore = Math.min(riskScore, 100);
 
-  let riskLevel: 'Low' | 'Moderate' | 'High' | 'Very High';
-  if (riskScore >= 70) riskLevel = 'Very High';
-  else if (riskScore >= 50) riskLevel = 'High';
-  else if (riskScore >= 30) riskLevel = 'Moderate';
-  else riskLevel = 'Low';
+  let riskLevel: 'Rendah' | 'Sedang' | 'Tinggi' | 'Sangat Tinggi';
+  if (riskScore >= 70) riskLevel = 'Sangat Tinggi';
+  else if (riskScore >= 50) riskLevel = 'Tinggi';
+  else if (riskScore >= 30) riskLevel = 'Sedang';
+  else riskLevel = 'Rendah';
 
   const hasDiabetes = riskScore >= 50;
 
@@ -86,7 +86,7 @@ function calculatePrediction(params: DiabetesParameters): PredictionResult {
   if (hasDiabetes) {
     recommendations.push('Jadwalkan pemeriksaan diabetes komprehensif dan tes HbA1c.');
     recommendations.push('Kembangkan rencana manajemen diabetes dengan penyedia layanan kesehatan Anda.');
-  } else if (riskLevel === 'High' || riskLevel === 'Moderate') {
+  } else if (riskLevel === 'Tinggi' || riskLevel === 'Sedang') {
     recommendations.push('Pemeriksaan kesehatan rutin setiap 6 bulan direkomendasikan.');
     recommendations.push('Pertahankan gaya hidup sehat: diet seimbang, olahraga teratur, manajemen stres.');
   } else {
@@ -133,9 +133,9 @@ export function ResultsDisplay({ patientName, parameters, onReset }: ResultsDisp
 
     // Risk Score Section
     const riskColor = 
-      result.riskLevel === 'Very High' ? [220, 38, 38] :
-      result.riskLevel === 'High' ? [234, 88, 12] :
-      result.riskLevel === 'Moderate' ? [202, 138, 4] :
+      result.riskLevel === 'Sangat Tinggi' ? [220, 38, 38] :
+      result.riskLevel === 'Tinggi' ? [234, 88, 12] :
+      result.riskLevel === 'Sedang' ? [202, 138, 4] :
       [22, 163, 74];
     
     pdf.setFillColor(riskColor[0], riskColor[1], riskColor[2]);
@@ -259,9 +259,9 @@ export function ResultsDisplay({ patientName, parameters, onReset }: ResultsDisp
               <div className="flex justify-between items-center">
                 <span className="font-medium">Diabetes Risk Score</span>
                 <span className={`text-2xl font-bold ${
-                  result.riskLevel === 'Very High' ? 'text-red-600' :
-                  result.riskLevel === 'High' ? 'text-orange-600' :
-                  result.riskLevel === 'Moderate' ? 'text-yellow-600' :
+                  result.riskLevel === 'Sangat Tinggi' ? 'text-red-600' :
+                  result.riskLevel === 'Tinggi' ? 'text-orange-600' :
+                  result.riskLevel === 'Sedang' ? 'text-yellow-600' :
                   'text-green-600'
                 }`}>
                   {result.riskScore}%
@@ -271,9 +271,9 @@ export function ResultsDisplay({ patientName, parameters, onReset }: ResultsDisp
             </div>
 
             <div className={`p-4 rounded-lg ${
-              result.riskLevel === 'Very High' ? 'bg-red-50 border border-red-200' :
-              result.riskLevel === 'High' ? 'bg-orange-50 border border-orange-200' :
-              result.riskLevel === 'Moderate' ? 'bg-yellow-50 border border-yellow-200' :
+              result.riskLevel === 'Sangat Tinggi' ? 'bg-red-50 border border-red-200' :
+              result.riskLevel === 'Tinggi' ? 'bg-orange-50 border border-orange-200' :
+              result.riskLevel === 'Sedang' ? 'bg-yellow-50 border border-yellow-200' :
               'bg-green-50 border border-green-200'
             }`}>
               <div className="flex items-center gap-2 mb-2">
