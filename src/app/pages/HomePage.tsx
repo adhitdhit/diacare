@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 
 // @ts-ignore
-import logoImage from "@/assets/logos.png";
+import logoImage from "@/assets/logoss.png";
 
 export function HomePage() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
