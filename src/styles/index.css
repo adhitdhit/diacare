@@ -2,3 +2,22 @@
 @import './tailwind.css';
 @import './theme.css';
 
+/* Pastikan semua elemen interaktif punya cursor pointer */
+button,
+a,
+[role="button"],
+.clickable {
+  cursor: pointer;
+}
+
+/* Untuk elemen dengan onClick handler */
+[onclick] {
+  cursor: pointer;
+}
+
+/* Hover effect untuk memastikan */
+button:hover,
+a:hover,
+[role="button"]:hover {
+  cursor: pointer;
+}
