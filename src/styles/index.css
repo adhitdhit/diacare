@@ -21,3 +21,78 @@ a:hover,
 [role="button"]:hover {
   cursor: pointer;
 }
+
+/* === MEDICAL THEME AUTO-OVERRIDE === */
+
+/* Header & Hero */
+.bg-gradient-to-r.from-red-600,
+.bg-gradient-to-r.from-red-500 {
+  --tw-gradient-from: #9F1239;
+  --tw-gradient-via: #BE123C;
+  --tw-gradient-to: #E11D48;
+}
+
+/* Buttons */
+.bg-red-600 {
+  background-color: #DC2626 !important;
+}
+
+.bg-red-600:hover {
+  background-color: #B91C1C !important;
+}
+
+/* Cards */
+.bg-red-50 {
+  background-color: #FFF1F2 !important;
+}
+
+/* Borders */
+.border-red-200 {
+  border-color: #FECDD3 !important;
+}
+
+.border-red-300 {
+  border-color: #FDA4AF !important;
+}
+
+/* Text */
+.text-red-600 {
+  color: #DC2626 !important;
+}
+
+/* Gradient to orange → ganti ke rose */
+.to-orange-500,
+.to-orange-600 {
+  --tw-gradient-to: #F43F5E !important;
+}
+
+/* Smooth transitions */
+button, 
+input, 
+.card, 
+.bg-gradient-to-br,
+.bg-gradient-to-r {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Hover effects */
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.3);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Input focus */
+input:focus,
+textarea:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+/* Card hover */
+.card:hover,
+[class*="bg-white"]:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}

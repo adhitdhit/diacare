@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+
 import { 
   Activity, Heart, Hospital, ClipboardList, TrendingUp, AlertCircle, 
   Stethoscope, Shield, ChevronRight, Sparkles, Clock, Calendar, 
@@ -133,39 +134,48 @@ export function HomePage() {
       </nav>
 
       {/* Hero Section dengan Gambar */}
-      <div className="bg-gradient-to-r from-red-600 via-red-500 to-orange-500 text-white py-16 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        </div>
+{/* PERUBAHAN: Gradient diganti ke nuansa medis (Maroon → Rose) */}
+<div className="bg-gradient-to-br from-[#9F1239] via-[#BE123C] to-[#E11D48] text-white py-20 px-4 relative overflow-hidden">
+  <div className="absolute inset-0 opacity-10">
+    <div className="absolute top-20 left-10 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse"></div>
+    <div className="absolute bottom-20 right-10 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+  </div>
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-            <div className="flex-1 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
-                <Sparkles className="w-5 h-5 text-yellow-300" />
-                <span className="text-sm font-medium">Platform Skrining Diabetes Terpercaya</span>
-              </div>
-              <h1 className="text-5xl font-bold mb-4 leading-tight">
-                Deteksi Dini Risiko<br />
-                <span className="text-yellow-300">Diabetes Mellitus</span>
-              </h1>
-              <p className="text-lg text-red-100 mb-8 max-w-2xl">
-                Platform digital terpercaya untuk skrining dan deteksi dini risiko diabetes mellitus 
-                dengan teknologi berbasis standar medis internasional.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                {/* Tombol Selengkapnya - Scroll ke section diabetes info */}
-                <Button 
-                  size="lg" 
-                  onClick={scrollToDiabetesInfo}
-                  className="bg-white text-red-600 hover:bg-red-50 shadow-2xl text-lg px-8 py-6 transform hover:scale-105 transition-all duration-300 cursor-pointer"
-                >
-                  Selengkapnya
-                  <ChevronRight className="w-5 h-5 ml-2" />
-                </Button>
-              </div>
-            </div>
+  <div className="max-w-7xl mx-auto relative z-10">
+    <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+      <div className="flex-1 text-center lg:text-left">
+        <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+          <Sparkles className="w-5 h-5 text-yellow-300" />
+          <span className="text-sm font-medium">Platform Skrining Diabetes Terpercaya</span>
+        </div>
+        
+        {/* ✅ PERUBAHAN: Tambah drop-shadow agar teks lebih tajam di background gelap */}
+        <h1 className="text-5xl font-bold mb-4 leading-tight drop-shadow-md">
+          Deteksi Dini Risiko<br />
+          {/* ✅ PERUBAHAN: Yellow → Amber (lebih soft & modern di layar) */}
+          <span className="text-amber-300">Diabetes Mellitus</span>
+        </h1>
+        
+        {/* ✅ PERUBAHAN: text-red-100 → text-rose-100 (lebih nyatu dengan palette baru) */}
+        <p className="text-lg text-rose-100 mb-8 max-w-2xl">
+          Platform digital terpercaya untuk skrining dan deteksi dini risiko diabetes mellitus 
+          dengan teknologi berbasis standar medis internasional.
+        </p>
+        
+        <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          {/* ✅ PERUBAHAN: Teks tombol jadi Maroon gelap agar kontrasnya premium & aksesibel */}
+          <Button 
+            size="lg" 
+            onClick={scrollToDiabetesInfo}
+            className="bg-white text-[#9F1239] hover:bg-gray-50 shadow-2xl text-lg px-8 py-6 transform hover:scale-105 transition-all duration-300 cursor-pointer"
+          >
+            Selengkapnya
+            <ChevronRight className="w-5 h-5 ml-2" />
+          </Button>
+        </div>
+      </div>
+
+      
 
             {/* Hero Image */}
             <div className="flex-1 relative">
