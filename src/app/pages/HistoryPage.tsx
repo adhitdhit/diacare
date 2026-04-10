@@ -63,25 +63,28 @@ const formatDate = (dateString: string) => {
   try {
     const date = new Date(dateString);
     
-    // Tambah 7 jam untuk WIB (UTC+7)
-    const wibTimestamp = date.getTime() + (7 * 60 * 60 * 1000);
-    const wibDate = new Date(wibTimestamp);
+    // DEBUG: Tampilkan raw data
+    console.log('📥 RAW from DB:', dateString);
+    console.log('🕐 UTC Time:', date.toISOString());
     
-    // Ambil komponen waktu
-    const day = wibDate.getUTCDate();
-    const month = wibDate.getUTCMonth();
-    const year = wibDate.getUTCFullYear();
-    const hours = String(wibDate.getUTCHours()).padStart(2, '0');
-    const minutes = String(wibDate.getUTCMinutes()).padStart(2, '0');
+    // Tambah 7 jam untuk WIB
+    const wibTime = new Date(date.getTime() + (7 * 60 * 60 * 1000));
     
-    const monthNames = [
-      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-    ];
+    console.log('🌏 WIB Time:', wibTime.toISOString());
     
-    return `${day} ${monthNames[month]} ${year} pukul ${hours}.${minutes}`;
+    const formatted = `${wibTime.getUTCDate()} ${
+      ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
+       'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][wibTime.getUTCMonth()]
+    } ${wibTime.getUTCFullYear()} pukul ${
+      String(wibTime.getUTCHours()).padStart(2, '0')
+    }.${
+      String(wibTime.getUTCMinutes()).padStart(2, '0')
+    }`;
+    
+    console.log('✅ FINAL:', formatted);
+    return formatted;
   } catch (error) {
-    console.error('Format date error:', error);
+    console.error('❌ Error:', error);
     return '-';
   }
 };
