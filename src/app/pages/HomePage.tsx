@@ -57,13 +57,20 @@ export function HomePage() {
 
   // Format tanggal
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('id-ID', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
-    });
-  };
+  if (!dateString) return '-';
+  
+  const date = new Date(dateString);
+  
+  return date.toLocaleString('id-ID', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone: 'Asia/Jakarta'
+  });
+};
 
   // Fungsi scroll ke section diabetes info
   const scrollToDiabetesInfo = () => {
