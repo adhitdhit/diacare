@@ -36,7 +36,7 @@ export function HistoryPage() {
         setLoading(true);
         setError(null);
         
-        const response = await fetch(`${API_URL}/history`);
+        const response = await fetch(`${API_URL}/api/history`);
         const result = await response.json();
         
         if (result.success) {
