@@ -40,6 +40,12 @@ interface MongoPrediction {
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
+
+
+if (!API_URL) {
+  console.error('⚠️ VITE_API_URL belum diset! Cek file .env atau .env.production');
+}
+
 // Helper: warna risk score
 const getRiskColor = (score: number) => {
   if (score >= 70) return { bg: 'from-red-600 to-red-500', text: 'text-red-600', border: 'border-red-300', light: 'bg-red-50', badge: 'bg-red-600' };
@@ -116,47 +122,70 @@ export function ResultsPage() {
   }, [navigate]);
 
   // 2️⃣ Submit input user ke backend (HANYA SEKALI!)
-  const submitToBackend = async (params: DiabetesParameters, name: string, gender: string) => {
-    // ✅ Cek sedang proses
-    if (isProcessingRef.current) {
-      console.log('⏭️ Already processing, skipping duplicate submit...');
-      return;
+ const submitToBackend = async (params: DiabetesParameters, name: string, gender: string) => {
+  if (isProcessingRef.current) {
+    console.log('⏭️ Already processing, skipping duplicate submit...');
+    return;
+  }
+
+  try {
+    isProcessingRef.current = true;
+    
+    console.log('📡 API_URL:', API_URL); // Debug log
+    
+    if (!API_URL) {
+      throw new Error('API URL is not configured. Please check environment variables.');
     }
 
-    try {
-      isProcessingRef.current = true; // ✅ Set sedang proses
-      
-      const payload = {
-        Pregnancies: params.pregnancies,
-        Glucose: params.glucose,
-        BloodPressure: params.bloodPressure,
-        SkinThickness: params.skinThickness,
-        Insulin: params.insulin,
-        BMI: params.bmi,
-        DiabetesPedigreeFunction: params.diabetesPedigreeFunction,
-        Age: params.age,
-        patientName: name,
-        patientGender: gender,
-        source: 'web_app'
-      };
+    const payload = {
+      Pregnancies: params.pregnancies,
+      Glucose: params.glucose,
+      BloodPressure: params.bloodPressure,
+      SkinThickness: params.skinThickness,
+      Insulin: params.insulin,
+      BMI: params.bmi,
+      DiabetesPedigreeFunction: params.diabetesPedigreeFunction,
+      Age: params.age,
+      patientName: name,
+      patientGender: gender,
+      source: 'web_app'
+    };
 
-      console.log('📡 Sending to backend...', payload);
+    console.log('📡 Sending to backend...', payload);
 
-      const response = await axios.post(`${API_URL}/predict`, payload);
-      
-      if (response.data.success) {
-        const id = response.data.savedId;
-        console.log('✅ Saved with ID:', id);
-        setPredictionId(id);
-        sessionStorage.setItem('predictionId', id);
-        await checkPredictionStatus(id);
-      }
-    } catch (error: any) {
-      console.error('❌ Submit error:', error);
-    } finally {
-      isProcessingRef.current = false; // ✅ Reset flag
+    const response = await axios.post(`${API_URL}/predict`, payload, {
+      timeout: 15000 // 15 detik timeout
+    });
+    
+    if (response.data.success) {
+      const id = response.data.savedId;
+      console.log('✅ Saved with ID:', id);
+      setPredictionId(id);
+      sessionStorage.setItem('predictionId', id);
+      await checkPredictionStatus(id);
     }
-  };
+  } catch (error: any) {
+    console.error('❌ Submit error:', error);
+    
+    // Error message yang lebih user-friendly
+    let errorMessage = 'Gagal memproses prediksi. ';
+    
+    if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
+      errorMessage = 'Tidak dapat terhubung ke server. Silakan coba lagi nanti.';
+    } else if (error.code === 'ECONNABORTED') {
+      errorMessage = 'Request timeout. Silakan coba lagi.';
+    } else if (error.response?.status === 404) {
+      errorMessage = 'API endpoint tidak ditemukan. Periksa konfigurasi API_URL.';
+    }
+    
+    alert(errorMessage);
+  } finally {
+    isProcessingRef.current = false;
+  }
+};
+
+
+
 
   // 3️⃣ Cek status prediksi dari MongoDB
   const checkPredictionStatus = async (id: string) => {
