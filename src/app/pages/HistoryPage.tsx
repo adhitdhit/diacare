@@ -63,28 +63,34 @@ const formatDate = (dateString: string) => {
   try {
     const date = new Date(dateString);
     
-    // DEBUG: Tampilkan raw data
+    // LOG 1: Raw data dari MongoDB
     console.log('📥 RAW from DB:', dateString);
-    console.log('🕐 UTC Time:', date.toISOString());
     
     // Tambah 7 jam untuk WIB
     const wibTime = new Date(date.getTime() + (7 * 60 * 60 * 1000));
     
-    console.log('🌏 WIB Time:', wibTime.toISOString());
+    // LOG 2: Setelah ditambah 7 jam
+    console.log('🌏 After +7hrs:', wibTime.toISOString());
     
-    const formatted = `${wibTime.getUTCDate()} ${
-      ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
-       'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][wibTime.getUTCMonth()]
-    } ${wibTime.getUTCFullYear()} pukul ${
-      String(wibTime.getUTCHours()).padStart(2, '0')
-    }.${
-      String(wibTime.getUTCMinutes()).padStart(2, '0')
-    }`;
+    const day = wibTime.getUTCDate();
+    const month = wibTime.getUTCMonth();
+    const year = wibTime.getUTCFullYear();
+    const hours = String(wibTime.getUTCHours()).padStart(2, '0');
+    const minutes = String(wibTime.getUTCMinutes()).padStart(2, '0');
     
-    console.log('✅ FINAL:', formatted);
+    const monthNames = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    
+    const formatted = `${day} ${monthNames[month]} ${year} pukul ${hours}.${minutes}`;
+    
+    // LOG 3: Hasil akhir
+    console.log('✅ FORMATTED:', formatted);
+    
     return formatted;
   } catch (error) {
-    console.error('❌ Error:', error);
+    console.error('❌ Date format error:', error);
     return '-';
   }
 };

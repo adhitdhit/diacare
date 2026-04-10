@@ -56,22 +56,26 @@ export function HomePage() {
   }, []);
 
   // Format tanggal
- const formatDate = (dateString: string) => {
-  console.log('📅 Raw date from DB:', dateString); // Debug log
-  
+  const formatDate = (dateString: string) => {
   if (!dateString) return '-';
   
   try {
     const date = new Date(dateString);
-    console.log('🕐 Parsed date:', date); // Debug log
     
+    // LOG 1: Raw data dari MongoDB
+    console.log('📥 RAW from DB:', dateString);
+    
+    // Tambah 7 jam untuk WIB
     const wibTime = new Date(date.getTime() + (7 * 60 * 60 * 1000));
+    
+    // LOG 2: Setelah ditambah 7 jam
+    console.log('🌏 After +7hrs:', wibTime.toISOString());
     
     const day = wibTime.getUTCDate();
     const month = wibTime.getUTCMonth();
     const year = wibTime.getUTCFullYear();
-    const hours = wibTime.getUTCHours().toString().padStart(2, '0');
-    const minutes = wibTime.getUTCMinutes().toString().padStart(2, '0');
+    const hours = String(wibTime.getUTCHours()).padStart(2, '0');
+    const minutes = String(wibTime.getUTCMinutes()).padStart(2, '0');
     
     const monthNames = [
       'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -79,14 +83,17 @@ export function HomePage() {
     ];
     
     const formatted = `${day} ${monthNames[month]} ${year} pukul ${hours}.${minutes}`;
-    console.log('✅ Formatted (WIB):', formatted); // Debug log
+    
+    // LOG 3: Hasil akhir
+    console.log('✅ FORMATTED:', formatted);
     
     return formatted;
   } catch (error) {
-    console.error('❌ Error formatting date:', error, 'Input:', dateString);
+    console.error('❌ Date format error:', error);
     return '-';
   }
 };
+
 
   // Fungsi scroll ke section diabetes info
   const scrollToDiabetesInfo = () => {
