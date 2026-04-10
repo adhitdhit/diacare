@@ -59,17 +59,29 @@ export function HomePage() {
   const formatDate = (dateString: string) => {
   if (!dateString) return '-';
   
-  const date = new Date(dateString);
-  
-  return date.toLocaleString('id-ID', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-    timeZone: 'Asia/Jakarta'
-  });
+  try {
+    const date = new Date(dateString);
+    
+    // Tambah 7 jam untuk WIB (UTC+7)
+    const wibTime = new Date(date.getTime() + (7 * 60 * 60 * 1000));
+    
+    // Format manual 
+    const day = wibTime.getUTCDate();
+    const month = wibTime.getUTCMonth();
+    const year = wibTime.getUTCFullYear();
+    const hours = wibTime.getUTCHours().toString().padStart(2, '0');
+    const minutes = wibTime.getUTCMinutes().toString().padStart(2, '0');
+    
+    const monthNames = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    
+    return `${day} ${monthNames[month]} ${year} pukul ${hours}.${minutes}`;
+  } catch (error) {
+    console.error('Error formatting date:', error);
+    return '-';
+  }
 };
 
   // Fungsi scroll ke section diabetes info
