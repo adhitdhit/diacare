@@ -61,53 +61,32 @@ const formatDate = (dateString: string) => {
   if (!dateString) return '-';
   
   try {
-    // 1. FIX PARSING: Ganti spasi jadi 'T' biar jadi ISO format valid
+    const date = new Date(dateString);
+    
+    // FIX: Ganti spasi jadi format ISO yang valid
     let cleanDate = dateString.replace(' ', 'T');
     if (cleanDate.includes('+00:00')) {
       cleanDate = cleanDate.replace('+00:00', 'Z');
     }
+    const utcDate = new Date(cleanDate);
     
-    const date = new Date(cleanDate);
+    // AUTO-DETECT timezone browser user
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     
-    // Cek apakah parsing berhasil
-    if (isNaN(date.getTime())) {
-      return '-';
-    }
-
-    // 2. MANUAL CONVERSION UTC ke WIB (UTC + 7 Jam)
-    let wibHours = date.getUTCHours() + 7;
-    let wibDay = date.getUTCDate();
-    let wibMonth = date.getUTCMonth();
-    let wibYear = date.getUTCFullYear();
-    const wibMinutes = date.getUTCMinutes();
-
-    // Handle overflow jam (jika jam >= 24, tambah 1 hari)
-    if (wibHours >= 24) {
-      wibHours -= 24;
-      wibDay += 1;
-      // Hitung jumlah hari di bulan tersebut
-      const daysInMonth = new Date(wibYear, wibMonth + 1, 0).getDate();
-      if (wibDay > daysInMonth) {
-        wibDay = 1;
-        wibMonth += 1;
-        if (wibMonth > 11) {
-          wibMonth = 0;
-          wibYear += 1;
-        }
-      }
-    }
-
-    const monthNames = [
-      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-    ];
-
-    // Format final
-    const formatted = `${wibDay} ${monthNames[wibMonth]} ${wibYear} pukul ${wibHours.toString().padStart(2, '0')}.${wibMinutes.toString().padStart(2, '0')}`;
+    // Format sesuai timezone user
+    const formatted = utcDate.toLocaleString('id-ID', {
+      timeZone: userTimezone,
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
     
     return formatted;
-    
   } catch (error) {
+    console.error('Format date error:', error);
     return '-';
   }
 };
