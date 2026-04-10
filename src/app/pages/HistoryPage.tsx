@@ -58,33 +58,30 @@ export function HistoryPage() {
 
   //Format Date
 const formatDate = (dateString: string) => {
-  console.log('📅 Raw date from DB:', dateString); // Debug log
-  
   if (!dateString) return '-';
   
   try {
     const date = new Date(dateString);
-    console.log('🕐 Parsed date:', date); // Debug log
     
-    const wibTime = new Date(date.getTime() + (7 * 60 * 60 * 1000));
+    // Tambah 7 jam untuk WIB (UTC+7)
+    const wibTimestamp = date.getTime() + (7 * 60 * 60 * 1000);
+    const wibDate = new Date(wibTimestamp);
     
-    const day = wibTime.getUTCDate();
-    const month = wibTime.getUTCMonth();
-    const year = wibTime.getUTCFullYear();
-    const hours = wibTime.getUTCHours().toString().padStart(2, '0');
-    const minutes = wibTime.getUTCMinutes().toString().padStart(2, '0');
+    // Ambil komponen waktu
+    const day = wibDate.getUTCDate();
+    const month = wibDate.getUTCMonth();
+    const year = wibDate.getUTCFullYear();
+    const hours = String(wibDate.getUTCHours()).padStart(2, '0');
+    const minutes = String(wibDate.getUTCMinutes()).padStart(2, '0');
     
     const monthNames = [
       'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
       'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
     ];
     
-    const formatted = `${day} ${monthNames[month]} ${year} pukul ${hours}.${minutes}`;
-    console.log('✅ Formatted (WIB):', formatted); // Debug log
-    
-    return formatted;
+    return `${day} ${monthNames[month]} ${year} pukul ${hours}.${minutes}`;
   } catch (error) {
-    console.error('❌ Error formatting date:', error, 'Input:', dateString);
+    console.error('Format date error:', error);
     return '-';
   }
 };
