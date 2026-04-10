@@ -144,9 +144,10 @@ app.post('/api/predict', async (req, res) => {
       createdAt: new Date()
     };
 
-   const saved = await PredictionCollection.insertOne(newPrediction);
+  
+    const saved = await PredictionCollection.insertOne(newPrediction);
 
-console.log(`✅ [${transactionId}] Saved: ${patientName} -> ${riskLevel} (${riskScore}%)`);
+console.log(`✅ [${transactionId}] Saved: ${patientName}`, saved.insertedId); // Debug log
 
 res.json({
   success: true,
