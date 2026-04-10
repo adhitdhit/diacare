@@ -144,21 +144,21 @@ app.post('/api/predict', async (req, res) => {
       createdAt: new Date()
     };
 
-    const saved = await PredictionCollection.insertOne(newPrediction);
-    
-    console.log(`✅ [${transactionId}] Saved: ${patientName} -> ${riskLevel} (${riskScore}%)`);
+   const saved = await PredictionCollection.insertOne(newPrediction);
 
-    res.json({
-      success: true,
-      savedId: saved.insertedId,
-      transactionId,
-      prediction,
-      probability,
-      riskScore,
-      riskLevel,
-      recommendations,
-      message: 'Prediksi berhasil!'
-    });
+console.log(`✅ [${transactionId}] Saved: ${patientName} -> ${riskLevel} (${riskScore}%)`);
+
+res.json({
+  success: true,
+  savedId: saved.insertedId.toString(), // ✅ WAJIB .toString()!
+  transactionId: transactionId,
+  prediction: prediction,
+  probability: probability,
+  riskScore: riskScore,
+  riskLevel: riskLevel,
+  recommendations: recommendations,
+  message: 'Prediksi berhasil!'
+});
 
   } catch (error) {
     console.error('❌ Error POST /api/predict:', error.message);

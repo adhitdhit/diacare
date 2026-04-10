@@ -122,21 +122,17 @@ export function ResultsPage() {
   }, [navigate]);
 
   // 2️⃣ Submit input user ke backend (HANYA SEKALI!)
- const submitToBackend = async (params: DiabetesParameters, name: string, gender: string) => {
+    const submitToBackend = async (params: DiabetesParameters, name: string, gender: string) => {
   if (isProcessingRef.current) {
-    console.log('⏭️ Already processing, skipping duplicate submit...');
+    console.log('⏭️ Already processing, skipping...');
     return;
   }
 
   try {
     isProcessingRef.current = true;
     
-    console.log('📡 API_URL:', API_URL); // Debug log
+    console.log('📡 API_URL:', API_URL); // Debug
     
-    if (!API_URL) {
-      throw new Error('API URL is not configured. Please check environment variables.');
-    }
-
     const payload = {
       Pregnancies: params.pregnancies,
       Glucose: params.glucose,
@@ -153,12 +149,18 @@ export function ResultsPage() {
 
     console.log('📡 Sending to backend...', payload);
 
-    const response = await axios.post(`${API_URL}/predict`, payload, {
-      timeout: 15000 // 15 detik timeout
-    });
+    const response = await axios.post(`${API_URL}/predict`, payload);
+    
+    console.log('📥 Backend response:', response.data); // ✅ Debug log
     
     if (response.data.success) {
       const id = response.data.savedId;
+      
+      if (!id) {
+        console.error('❌ savedId is missing from response!');
+        throw new Error('Backend did not return savedId');
+      }
+      
       console.log('✅ Saved with ID:', id);
       setPredictionId(id);
       sessionStorage.setItem('predictionId', id);
@@ -166,19 +168,7 @@ export function ResultsPage() {
     }
   } catch (error: any) {
     console.error('❌ Submit error:', error);
-    
-    // Error message yang lebih user-friendly
-    let errorMessage = 'Gagal memproses prediksi. ';
-    
-    if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
-      errorMessage = 'Tidak dapat terhubung ke server. Silakan coba lagi nanti.';
-    } else if (error.code === 'ECONNABORTED') {
-      errorMessage = 'Request timeout. Silakan coba lagi.';
-    } else if (error.response?.status === 404) {
-      errorMessage = 'API endpoint tidak ditemukan. Periksa konfigurasi API_URL.';
-    }
-    
-    alert(errorMessage);
+    alert('Gagal menyimpan data: ' + (error.message || 'Unknown error'));
   } finally {
     isProcessingRef.current = false;
   }
