@@ -56,16 +56,17 @@ export function HomePage() {
   }, []);
 
   // Format tanggal
-  const formatDate = (dateString: string) => {
+ const formatDate = (dateString: string) => {
+  console.log('📅 Raw date from DB:', dateString); // Debug log
+  
   if (!dateString) return '-';
   
   try {
     const date = new Date(dateString);
+    console.log('🕐 Parsed date:', date); // Debug log
     
-    // Tambah 7 jam untuk WIB (UTC+7)
     const wibTime = new Date(date.getTime() + (7 * 60 * 60 * 1000));
     
-    // Format manual 
     const day = wibTime.getUTCDate();
     const month = wibTime.getUTCMonth();
     const year = wibTime.getUTCFullYear();
@@ -77,9 +78,12 @@ export function HomePage() {
       'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
     ];
     
-    return `${day} ${monthNames[month]} ${year} pukul ${hours}.${minutes}`;
+    const formatted = `${day} ${monthNames[month]} ${year} pukul ${hours}.${minutes}`;
+    console.log('✅ Formatted (WIB):', formatted); // Debug log
+    
+    return formatted;
   } catch (error) {
-    console.error('Error formatting date:', error);
+    console.error('❌ Error formatting date:', error, 'Input:', dateString);
     return '-';
   }
 };
