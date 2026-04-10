@@ -37,7 +37,7 @@ export function HomePage() {
     const fetchRecentHistory = async () => {
       try {
         setHistoryLoading(true);
-        const response = await fetch(`${API_URL}/api/history`);
+        const response = await fetch(`${API_URL}/history`);
         const result = await response.json();
         
         if (result.success) {
