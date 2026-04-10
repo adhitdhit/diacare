@@ -204,6 +204,80 @@ app.get('/api/prediction/:id', async (req, res) => {
   }
 });
 
+
+// === ROUTE 5 : GET ALL HISTORY ===
+app.get('/api/history', async (req, res) => {
+  try {
+    const db = mongoose.connection.db;
+    const PredictionCollection = db.collection('Database_3');
+    
+    // Ambil semua data, urutkan dari yang terbaru
+    const history = await PredictionCollection.find({})
+      .sort({ createdAt: -1 }) // Terbaru di atas
+      .limit(50) // Ambil 50 data terakhir
+      .toArray();
+    
+    // Convert ObjectId ke string
+    const formattedHistory = history.map(doc => ({
+      ...doc,
+      _id: doc._id.toString()
+    }));
+    
+    console.log(`✅ Fetched ${formattedHistory.length} history records`);
+    
+    res.json({
+      success: true,
+      count: formattedHistory.length,
+      data: formattedHistory
+    });
+    
+  } catch (error) {
+    console.error('❌ Error fetching history:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: error.message 
+    });
+  }
+});
+
+// === ROUTE 6 : GET HISTORY BY PATIENT NAME ===
+app.get('/api/history/:patientName', async (req, res) => {
+  try {
+    const { patientName } = req.params;
+    const db = mongoose.connection.db;
+    const PredictionCollection = db.collection('Database_3');
+    
+    // Cari berdasarkan nama pasien (case insensitive)
+    const history = await PredictionCollection.find({
+      patientName: { $regex: patientName, $options: 'i' }
+    })
+      .sort({ createdAt: -1 })
+      .limit(20)
+      .toArray();
+    
+    const formattedHistory = history.map(doc => ({
+      ...doc,
+      _id: doc._id.toString()
+    }));
+    
+    console.log(`✅ Fetched ${formattedHistory.length} records for ${patientName}`);
+    
+    res.json({
+      success: true,
+      count: formattedHistory.length,
+      data: formattedHistory
+    });
+    
+  } catch (error) {
+    console.error('❌ Error fetching patient history:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: error.message 
+    });
+  }
+});
+
+
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

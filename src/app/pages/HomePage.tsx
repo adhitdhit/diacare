@@ -2,21 +2,68 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-
 import { 
   Activity, Heart, Hospital, ClipboardList, TrendingUp, AlertCircle, 
   Stethoscope, Shield, ChevronRight, Sparkles, Clock, Calendar, 
   MapPin, Phone, Users, Award, CheckCircle2, ArrowRight, ArrowUp,
-  FileText, BarChart3, Smartphone
+  FileText, BarChart3, Smartphone, Loader2
 } from 'lucide-react';
 
 // @ts-ignore
 import logoImage from "@/assets/logoss.png";
 
+// Interface untuk data history (sama seperti HistoryPage)
+interface HistoryData {
+  _id: string;
+  patientName: string;
+  patientGender: string;
+  status: string;
+  createdAt: string;
+}
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 export function HomePage() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [showAllHospitals, setShowAllHospitals] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  
+  // ✅ State untuk riwayat pemeriksaan (data real dari API)
+  const [recentHistory, setRecentHistory] = useState<HistoryData[]>([]);
+  const [historyLoading, setHistoryLoading] = useState(true);
+
+  // ✅ Fetch data history dari backend
+  useEffect(() => {
+    const fetchRecentHistory = async () => {
+      try {
+        setHistoryLoading(true);
+        const response = await fetch(`${API_URL}/history`);
+        const result = await response.json();
+        
+        if (result.success) {
+          // Ambil 4 data terbaru untuk ditampilkan di homepage
+          const latest = result.data.slice(0, 4);
+          setRecentHistory(latest);
+        }
+      } catch (error) {
+        console.error('Error fetching history:', error);
+      } finally {
+        setHistoryLoading(false);
+      }
+    };
+
+    fetchRecentHistory();
+  }, []);
+
+  // Format tanggal
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+  };
 
   // Fungsi scroll ke section diabetes info
   const scrollToDiabetesInfo = () => {
@@ -60,13 +107,6 @@ export function HomePage() {
     { name: 'RS Santo Borromeus', distance: '5.2 km', address: 'Jl. Ir. H. Juanda No. 100', telp: '(022) 250 3100', specialty: 'Poli Penyakit Dalam' },
     { name: 'RS Hasan Sadikin', distance: '6.0 km', address: 'Jl. Pasteur No. 38', telp: '(022) 2034 953', specialty: 'Divisi Endokrinologi' },
     { name: 'RS Immanuel', distance: '6.8 km', address: 'Jl. Kopo No. 161', telp: '(022) 520 1656', specialty: 'Klinik Diabetes' },
-  ];
-
-  const recentAssessments = [
-    { id: 1, patientName: 'Budi Santoso', date: '2026-04-03', riskLevel: 'Rendah', score: 12, color: 'green' },
-    { id: 2, patientName: 'Siti Nurhaliza', date: '2026-04-03', riskLevel: 'Sedang', score: 18, color: 'yellow' },
-    { id: 3, patientName: 'Ahmad Wijaya', date: '2026-04-02', riskLevel: 'Tinggi', score: 25, color: 'orange' },
-    { id: 4, patientName: 'Dewi Lestari', date: '2026-04-02', riskLevel: 'Rendah', score: 10, color: 'green' },
   ];
 
   const features = [
@@ -133,49 +173,42 @@ export function HomePage() {
         </div>
       </nav>
 
-      {/* Hero Section dengan Gambar */}
-{/* PERUBAHAN: Gradient diganti ke nuansa medis (Maroon → Rose) */}
-<div className="bg-gradient-to-br from-[#9F1239] via-[#BE123C] to-[#E11D48] text-white py-20 px-4 relative overflow-hidden">
-  <div className="absolute inset-0 opacity-10">
-    <div className="absolute top-20 left-10 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse"></div>
-    <div className="absolute bottom-20 right-10 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-  </div>
-
-  <div className="max-w-7xl mx-auto relative z-10">
-    <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-      <div className="flex-1 text-center lg:text-left">
-        <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
-          <Sparkles className="w-5 h-5 text-yellow-300" />
-          <span className="text-sm font-medium">Platform Skrining Diabetes Terpercaya</span>
+      {/* Hero Section */}
+      <div className="bg-gradient-to-br from-[#9F1239] via-[#BE123C] to-[#E11D48] text-white py-20 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
         </div>
-        
-        {/* ✅ PERUBAHAN: Tambah drop-shadow agar teks lebih tajam di background gelap */}
-        <h1 className="text-5xl font-bold mb-4 leading-tight drop-shadow-md">
-          Deteksi Dini Risiko<br />
-          {/* ✅ PERUBAHAN: Yellow → Amber (lebih soft & modern di layar) */}
-          <span className="text-amber-300">Diabetes Mellitus</span>
-        </h1>
-        
-        {/* ✅ PERUBAHAN: text-red-100 → text-rose-100 (lebih nyatu dengan palette baru) */}
-        <p className="text-lg text-rose-100 mb-8 max-w-2xl">
-          Platform digital terpercaya untuk skrining dan deteksi dini risiko diabetes mellitus 
-          dengan teknologi berbasis standar medis internasional.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-          {/* ✅ PERUBAHAN: Teks tombol jadi Maroon gelap agar kontrasnya premium & aksesibel */}
-          <Button 
-            size="lg" 
-            onClick={scrollToDiabetesInfo}
-            className="bg-white text-[#9F1239] hover:bg-gray-50 shadow-2xl text-lg px-8 py-6 transform hover:scale-105 transition-all duration-300 cursor-pointer"
-          >
-            Selengkapnya
-            <ChevronRight className="w-5 h-5 ml-2" />
-          </Button>
-        </div>
-      </div>
 
-      
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+            <div className="flex-1 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+                <Sparkles className="w-5 h-5 text-yellow-300" />
+                <span className="text-sm font-medium">Platform Skrining Diabetes Terpercaya</span>
+              </div>
+              
+              <h1 className="text-5xl font-bold mb-4 leading-tight drop-shadow-md">
+                Deteksi Dini Risiko<br />
+                <span className="text-amber-300">Diabetes Mellitus</span>
+              </h1>
+              
+              <p className="text-lg text-rose-100 mb-8 max-w-2xl">
+                Platform digital terpercaya untuk skrining dan deteksi dini risiko diabetes mellitus 
+                dengan teknologi berbasis standar medis internasional.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <Button 
+                  size="lg" 
+                  onClick={scrollToDiabetesInfo}
+                  className="bg-white text-[#9F1239] hover:bg-gray-50 shadow-2xl text-lg px-8 py-6 transform hover:scale-105 transition-all duration-300 cursor-pointer"
+                >
+                  Selengkapnya
+                  <ChevronRight className="w-5 h-5 ml-2" />
+                </Button>
+              </div>
+            </div>
 
             {/* Hero Image */}
             <div className="flex-1 relative">
@@ -218,7 +251,7 @@ export function HomePage() {
           })}
         </div>
 
-        {/* Riwayat Pemeriksaan Section */}
+        {/* ✅ RIWAYAT PEMERIKSAAN - DATA DYNAMIC DARI API */}
         <Card className="border-red-200 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden">
           <CardHeader className="bg-gradient-to-r from-red-50 via-orange-50 to-red-50 border-b border-red-100">
             <div className="flex items-center justify-between">
@@ -240,37 +273,71 @@ export function HomePage() {
             </div>
           </CardHeader>
           <CardContent className="pt-6">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {recentAssessments.map((assessment) => (
-                <div key={assessment.id} className="bg-gradient-to-br from-white to-red-50 p-5 rounded-xl border-2 border-red-100 hover:border-red-300 hover:shadow-lg transition-all duration-300">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-red-100 to-orange-100 rounded-lg flex items-center justify-center">
-                      <FileText className="w-5 h-5 text-red-600" />
+            
+            {/* Loading State */}
+            {historyLoading ? (
+              <div className="flex justify-center py-8">
+                <Loader2 className="w-8 h-8 text-red-600 animate-spin" />
+                <span className="ml-2 text-gray-600">Memuat riwayat...</span>
+              </div>
+            ) : recentHistory.length === 0 ? (
+              /* Empty State */
+              <div className="text-center py-8">
+                <FileText className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                <p className="text-gray-500">Belum ada riwayat pemeriksaan</p>
+                <Link to="/assessment">
+                  <Button variant="link" className="text-red-600 mt-2">
+                    Mulai asesmen pertama →
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              /* List History - Privacy Focused (tanpa risk score) */
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {recentHistory.map((item) => (
+                  <div 
+                    key={item._id} 
+                    className="bg-gradient-to-br from-white to-red-50 p-5 rounded-xl border-2 border-red-100 hover:border-red-300 hover:shadow-lg transition-all duration-300"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-red-100 to-orange-100 rounded-lg flex items-center justify-center">
+                        <FileText className="w-5 h-5 text-red-600" />
+                      </div>
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                        item.status === 'completed'
+                          ? 'bg-green-100 text-green-700'
+                          : item.status === 'processing'
+                          ? 'bg-yellow-100 text-yellow-700'
+                          : 'bg-gray-100 text-gray-700'
+                      }`}>
+                        {item.status === 'completed' ? '✅ Selesai' : 
+                         item.status === 'processing' ? '⏳ Diproses' : '⏳ Pending'}
+                      </span>
                     </div>
-                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                      assessment.color === 'green' ? 'bg-green-100 text-green-700' :
-                      assessment.color === 'yellow' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-orange-100 text-orange-700'
-                    }`}>
-                      {assessment.riskLevel}
-                    </span>
+                    
+                    <h4 className="font-bold text-gray-900 mb-1 truncate">
+                      {item.patientName}
+                    </h4>
+                    
+                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                      <Calendar className="w-4 h-4" />
+                      {formatDate(item.createdAt)}
+                    </div>
+                    
+                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <span className={`w-2 h-2 rounded-full ${
+                        item.patientGender === 'perempuan' ? 'bg-pink-400' : 'bg-blue-400'
+                      }`}></span>
+                      {item.patientGender}
+                    </div>
                   </div>
-                  <h4 className="font-bold text-gray-900 mb-1">{assessment.patientName}</h4>
-                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                    <Calendar className="w-4 h-4" />
-                    {new Date(assessment.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <BarChart3 className="w-4 h-4 text-red-600" />
-                    <span className="font-semibold text-red-600">Score: {assessment.score}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 
-        {/* About Diabetes Section dengan Gambar */}
+        {/* About Diabetes Section */}
         <Card id="diabetes-info" className="border-red-200 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden scroll-mt-20">
           <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-red-100 to-transparent rounded-full blur-3xl opacity-50"></div>
           <CardHeader className="bg-gradient-to-r from-red-50 via-orange-50 to-red-50 border-b border-red-100 relative">
@@ -362,7 +429,7 @@ export function HomePage() {
           </CardContent>
         </Card>
 
-        {/* About DiaCares App Section dengan Gambar */}
+        {/* About DiaCares App Section */}
         <Card className="border-orange-200 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden">
           <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-orange-100 to-transparent rounded-full blur-3xl opacity-40"></div>
           <CardHeader className="bg-gradient-to-r from-orange-50 via-red-50 to-orange-50 border-b border-orange-100 relative">
