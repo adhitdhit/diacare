@@ -61,36 +61,53 @@ const formatDate = (dateString: string) => {
   if (!dateString) return '-';
   
   try {
-    const date = new Date(dateString);
+    // 1. FIX PARSING: Ganti spasi jadi 'T' biar jadi ISO format valid
+    let cleanDate = dateString.replace(' ', 'T');
+    if (cleanDate.includes('+00:00')) {
+      cleanDate = cleanDate.replace('+00:00', 'Z');
+    }
     
-    // LOG 1: Raw data dari MongoDB
-    console.log('📥 RAW from DB:', dateString);
+    const date = new Date(cleanDate);
     
-    // Tambah 7 jam untuk WIB
-    const wibTime = new Date(date.getTime() + (7 * 60 * 60 * 1000));
-    
-    // LOG 2: Setelah ditambah 7 jam
-    console.log('🌏 After +7hrs:', wibTime.toISOString());
-    
-    const day = wibTime.getUTCDate();
-    const month = wibTime.getUTCMonth();
-    const year = wibTime.getUTCFullYear();
-    const hours = String(wibTime.getUTCHours()).padStart(2, '0');
-    const minutes = String(wibTime.getUTCMinutes()).padStart(2, '0');
-    
+    // Cek apakah parsing berhasil
+    if (isNaN(date.getTime())) {
+      return '-';
+    }
+
+    // 2. MANUAL CONVERSION UTC ke WIB (UTC + 7 Jam)
+    let wibHours = date.getUTCHours() + 7;
+    let wibDay = date.getUTCDate();
+    let wibMonth = date.getUTCMonth();
+    let wibYear = date.getUTCFullYear();
+    const wibMinutes = date.getUTCMinutes();
+
+    // Handle overflow jam (jika jam >= 24, tambah 1 hari)
+    if (wibHours >= 24) {
+      wibHours -= 24;
+      wibDay += 1;
+      // Hitung jumlah hari di bulan tersebut
+      const daysInMonth = new Date(wibYear, wibMonth + 1, 0).getDate();
+      if (wibDay > daysInMonth) {
+        wibDay = 1;
+        wibMonth += 1;
+        if (wibMonth > 11) {
+          wibMonth = 0;
+          wibYear += 1;
+        }
+      }
+    }
+
     const monthNames = [
       'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
       'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
     ];
-    
-    const formatted = `${day} ${monthNames[month]} ${year} pukul ${hours}.${minutes}`;
-    
-    // LOG 3: Hasil akhir
-    console.log('✅ FORMATTED:', formatted);
+
+    // Format final
+    const formatted = `${wibDay} ${monthNames[wibMonth]} ${wibYear} pukul ${wibHours.toString().padStart(2, '0')}.${wibMinutes.toString().padStart(2, '0')}`;
     
     return formatted;
+    
   } catch (error) {
-    console.error('❌ Date format error:', error);
     return '-';
   }
 };
