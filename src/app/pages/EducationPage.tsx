@@ -474,8 +474,8 @@ export function EducationPage() {
         </div>
 
         {/* Footer */}
-        <div className="bg-gradient-to-r from-red-900 via-red-800 to-orange-900 text-white py-12 px-4 mt-20">
-          <footer className="bg-gradient-to-r from-red-900 via-red-800 to-orange-900 text-white py-8 px-4 mt-auto"></footer>
+        <footer className="bg-gradient-to-r from-red-900 via-red-800 to-orange-900 text-white py-12 px-4 mt-20">
+          
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-3 gap-8 mb-8">
               <div>
@@ -516,7 +516,7 @@ export function EducationPage() {
               </p>
             </div>
           </div>
-        </div>
+        </footer>
 
         {/* Tombol Back to Top */}
         {showScrollTop && (
