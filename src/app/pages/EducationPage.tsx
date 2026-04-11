@@ -5,11 +5,17 @@ import { Button } from '../components/ui/button';
 import { 
   Heart, Activity, Apple, Dumbbell, Eye, Brain, 
   ChevronDown, ChevronUp, BookOpen, AlertCircle,
-  CheckCircle, TrendingUp, Droplets, Moon, ArrowUp,
+  CheckCircle, TrendingUp, Droplets, Moon, ArrowUp, Droplet, Scale,Shield,Calendar,Users,
   Clock as ClockIcon, Menu, Phone, ArrowLeft, Hospital
 } from 'lucide-react';
 // @ts-ignore
 import logoImage from "@/assets/logoss.png";
+    // @ts-ignore
+import pregnancyImage from "@/assets/hamil.jpg";
+ // @ts-ignore
+import familyImage from "@/assets/family.jpg";
+ // @ts-ignore
+import skinImage from "@/assets/skin.jfif";
 
 const educationData = {
   pengertian: {
@@ -351,6 +357,212 @@ export function EducationPage() {
                   </div>
                 </div>
               </Card>
+
+{/* ✅ NEW SECTION: Penjelasan Parameter Klinis Diabetes */}
+<div className="space-y-8 mt-8">
+  
+  {/* Header Section */}
+  <div className="text-center mb-8">
+    <h2 className="text-3xl font-bold text-gray-900 mb-3">Parameter Klinis Diabetes</h2>
+    <p className="text-gray-600 max-w-3xl mx-auto">
+      Memahami parameter-parameter penting dalam diagnosis dan pemantauan diabetes mellitus beserta nilai normalnya.
+    </p>
+  </div>
+
+  {/* 8 Parameter Cards - MEDICAL EXPLANATION */}
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    
+    {/* 1. Glukosa */}
+    <Card className="border-2 border-red-100 overflow-hidden hover:shadow-xl transition-all group hover:-translate-y-1">
+      <div className="h-44 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=400&h=300&fit=crop" alt="Blood Glucose" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+      </div>
+      <CardContent className="p-4">
+        <h3 className="font-bold text-lg text-gray-900 mb-2">Glukosa Darah</h3>
+        <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+          Kadar gula dalam darah yang menjadi indikator utama diabetes. Diukur setelah puasa 8 jam.
+        </p>
+        <div className="space-y-1 text-xs">
+          <div className="flex justify-between">
+            <span className="text-gray-600">Normal:</span>
+            <span className="font-semibold text-green-600">&lt; 100 mg/dL</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Prediabetes:</span>
+            <span className="font-semibold text-yellow-600">100-125</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Diabetes:</span>
+            <span className="font-semibold text-red-600">≥ 126</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+
+    {/* 2. Tekanan Darah */}
+    <Card className="border-2 border-red-100 overflow-hidden hover:shadow-xl transition-all group hover:-translate-y-1">
+      <div className="h-44 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=400&h=300&fit=crop" alt="Blood Pressure" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+      </div>
+      <CardContent className="p-4">
+        <h3 className="font-bold text-lg text-gray-900 mb-2">Tekanan Darah</h3>
+        <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+          Hipertensi sering menyertai diabetes dan meningkatkan risiko komplikasi kardiovaskular.
+        </p>
+        <div className="space-y-1 text-xs">
+          <div className="flex justify-between">
+            <span className="text-gray-600">Normal:</span>
+            <span className="font-semibold text-green-600">&lt; 120/80</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Pre-HT:</span>
+            <span className="font-semibold text-yellow-600">120-139</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Hipertensi:</span>
+            <span className="font-semibold text-red-600">≥ 140/90</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+
+    {/* 3. BMI */}
+    <Card className="border-2 border-red-100 overflow-hidden hover:shadow-xl transition-all group hover:-translate-y-1">
+      <div className="h-44 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=300&fit=crop" alt="BMI Measurement" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+      </div>
+      <CardContent className="p-4">
+        <h3 className="font-bold text-lg text-gray-900 mb-2">BMI (IMT)</h3>
+        <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+          Indeks Massa Tubuh mengukur obesitas. Obesitas adalah faktor risiko utama diabetes tipe 2.
+        </p>
+        <div className="space-y-1 text-xs">
+          <div className="flex justify-between">
+            <span className="text-gray-600">Normal:</span>
+            <span className="font-semibold text-green-600">18.5-24.9</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Overweight:</span>
+            <span className="font-semibold text-yellow-600">25-29.9</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Obesitas:</span>
+            <span className="font-semibold text-red-600">≥ 30</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+
+    {/* 4. Usia */}
+    <Card className="border-2 border-red-100 overflow-hidden hover:shadow-xl transition-all group hover:-translate-y-1">
+      <div className="h-44 overflow-hidden">
+       <img src="https://images.unsplash.com/photo-1560520031-3a4dc4e9de0c?w=400&h=300&fit=crop" alt="Age Factor" />
+      </div>
+      <CardContent className="p-4">
+        <h3 className="font-bold text-lg text-gray-900 mb-2">Usia</h3>
+        <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+          Risiko diabetes meningkat seiring usia, terutama setelah usia 45 tahun karena penurunan fungsi pankreas.
+        </p>
+        <div className="bg-purple-50 p-2 rounded text-xs text-purple-800">
+          <strong>Risiko Tinggi:</strong> Usia ≥ 45 tahun
+        </div>
+      </CardContent>
+    </Card>
+
+    {/* 5. Insulin */}
+    <Card className="border-2 border-red-100 overflow-hidden hover:shadow-xl transition-all group hover:-translate-y-1">
+      <div className="h-44 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400&h=300&fit=crop" alt="Insulin" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+      </div>
+      <CardContent className="p-4">
+        <h3 className="font-bold text-lg text-gray-900 mb-2">Kadar Insulin</h3>
+        <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+          Hormon yang mengatur gula darah. Resistensi insulin adalah penyebab utama diabetes tipe 2.
+        </p>
+        <div className="bg-orange-50 p-2 rounded text-xs text-orange-800">
+          <strong>Normal:</strong> 2.6-24.9 µU/mL
+        </div>
+      </CardContent>
+    </Card>
+
+    {/* 6. Ketebalan Kulit */}
+    <Card className="border-2 border-red-100 overflow-hidden hover:shadow-xl transition-all group hover:-translate-y-1">
+      <div className="h-44 overflow-hidden">
+        <img src={skinImage} alt="Skin" className="w-full h-44 object-cover" />
+      </div>
+      <CardContent className="p-4">
+        <h3 className="font-bold text-lg text-gray-900 mb-2">Ketebalan Kulit</h3>
+        <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+          Ukuran lemak subkutan di trisep. Indikator cadangan energi dan status gizi.
+        </p>
+        <div className="bg-amber-50 p-2 rounded text-xs text-amber-800">
+          <strong>Normal:</strong> Bervariasi sesuai usia & gender
+        </div>
+      </CardContent>
+    </Card>
+
+    {/* 7. Riwayat Keluarga */}
+    <Card className="border-2 border-red-100 overflow-hidden hover:shadow-xl transition-all group hover:-translate-y-1">
+      <div className="h-44 overflow-hidden">
+       <img src={familyImage} alt="Keluarga" className="w-full h-44 object-cover" />
+      </div>
+      <CardContent className="p-4">
+        <h3 className="font-bold text-lg text-gray-900 mb-2">Riwayat Keluarga</h3>
+        <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+          Faktor genetik berperan penting. Memiliki orang tua dengan diabetes meningkatkan risiko.
+        </p>
+        <div className="bg-indigo-50 p-2 rounded text-xs text-indigo-800">
+          <strong>Faktor Risiko:</strong> Genetik & lingkungan
+        </div>
+      </CardContent>
+    </Card>
+
+    {/* 8. Kehamilan */}
+    <Card className="border-2 border-red-100 overflow-hidden hover:shadow-xl transition-all group hover:-translate-y-1">
+      <div className="h-44 overflow-hidden">
+        <img src={pregnancyImage} alt="Kehamilan" className="w-full h-44 object-cover" />
+      </div>
+      <CardContent className="p-4">
+        <h3 className="font-bold text-lg text-gray-900 mb-2">Kehamilan</h3>
+        <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+          Diabetes gestasional terjadi saat hamil. Wanita dengan riwayat ini berisiko tinggi diabetes tipe 2.
+        </p>
+        <div className="bg-pink-50 p-2 rounded text-xs text-pink-800">
+          <strong>Risiko:</strong> Meningkat setelah kehamilan
+        </div>
+      </CardContent>
+    </Card>
+
+  </div>
+
+  {/* Info Box Penting */}
+  <Card className="border-2 border-red-200 bg-gradient-to-br from-red-50 to-orange-50">
+    <CardContent className="p-6">
+      <div className="flex items-start gap-4">
+        <div className="w-12 h-12 bg-gradient-to-br from-red-600 to-orange-600 rounded-xl flex items-center justify-center flex-shrink-0">
+          <AlertCircle className="w-6 h-6 text-white" />
+        </div>
+        <div className="flex-1">
+          <h4 className="font-bold text-gray-900 mb-2 text-lg">Penting untuk Diketahui</h4>
+          <ul className="space-y-2 text-gray-700 text-sm">
+            <li className="flex items-start gap-2">
+              <CheckCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+              <span>Pemeriksaan parameter ini secara rutin membantu deteksi dini dan pencegahan komplikasi diabetes</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+              <span>Nilai normal dapat bervariasi tergantung laboratorium dan kondisi individu</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <CheckCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+              <span>Konsultasikan hasil pemeriksaan Anda dengan dokter untuk diagnosis yang akurat</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
             </div>
           )}
 
