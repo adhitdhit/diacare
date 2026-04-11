@@ -63,7 +63,7 @@ const getParamStatus = (value: number, min: number, max: number) => {
 export function ResultsPage() {
   const navigate = useNavigate();
   
-  // ✅ REFS untuk prevent double submit
+  // REFS untuk prevent double submit
   const hasSubmittedRef = useRef(false);
   const isProcessingRef = useRef(false);
   const pollingIntervalRef = useRef<number | null>(null); // ✅ Untuk auto-polling
@@ -79,7 +79,7 @@ export function ResultsPage() {
   // 1️⃣ Init: load data & submit ke backend (HANYA SEKALI!)
   useEffect(() => {
     const initPage = async () => {
-      // ✅ Cek apakah sudah pernah submit (prevent double call di Strict Mode)
+      // Cek apakah sudah pernah submit 
       if (hasSubmittedRef.current) {
         console.log('⏭️ Already initialized, skipping...');
         return;
@@ -108,7 +108,7 @@ export function ResultsPage() {
           await checkPredictionStatus(savedId);
         } else {
           console.log('📤 Submitting new prediction...');
-          hasSubmittedRef.current = true; // ✅ Set flag sudah submit
+          hasSubmittedRef.current = true; 
           await submitToBackend(JSON.parse(paramsStr), name, gender || 'laki-laki');
         }
       } catch (err) {
@@ -121,7 +121,7 @@ export function ResultsPage() {
     initPage();
   }, [navigate]);
 
-  // 2️⃣ Submit input user ke backend (HANYA SEKALI!)
+  // Submit input user ke backend 
     const submitToBackend = async (params: DiabetesParameters, name: string, gender: string) => {
   if (isProcessingRef.current) {
     console.log('⏭️ Already processing, skipping...');
@@ -177,7 +177,7 @@ export function ResultsPage() {
 
 
 
-  // 3️⃣ Cek status prediksi dari MongoDB
+  // Cek status prediksi dari MongoDB
   const checkPredictionStatus = async (id: string) => {
     try {
       setIsChecking(true);
@@ -197,7 +197,7 @@ export function ResultsPage() {
             prediction: data.Prediction_Result
           });
           
-          // ✅ STOP polling kalau sudah selesai
+          // STOP polling kalau sudah selesai
           if (pollingIntervalRef.current) {
             clearInterval(pollingIntervalRef.current);
             pollingIntervalRef.current = null;
@@ -214,7 +214,7 @@ export function ResultsPage() {
     }
   };
 
-  // ✅ AUTO-POLLING: Cek otomatis setiap 3 detik (TAMBAHAN BARU)
+  // AUTO-POLLING: Cek otomatis setiap 3 detik 
   useEffect(() => {
     if (predictionId && prediction?.status !== 'completed') {
       console.log('🔄 Starting auto-polling for prediction:', predictionId);
@@ -236,9 +236,9 @@ export function ResultsPage() {
         }
       };
     }
-  }, [predictionId, prediction?.status]); // ✅ Re-run jika predictionId atau status berubah
+  }, [predictionId, prediction?.status]); // 
 
-  // 4️⃣ Refresh button (masih bisa dipakai manual kalau mau)
+  // 4️⃣ Refresh button 
   const handleRefresh = () => {
     if (predictionId) {
       checkPredictionStatus(predictionId);

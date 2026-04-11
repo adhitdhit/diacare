@@ -27,7 +27,7 @@ export interface DiabetesParameters {
 export function ParametersPage() {
   const navigate = useNavigate();
   
-  // ✅ REFS untuk prevent double submit
+  // REFS untuk prevent double submit
   const hasSubmittedRef = useRef(false);
   const isProcessingRef = useRef(false);
   
@@ -132,7 +132,7 @@ export function ParametersPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // ✅ Cek sudah submit (prevent double call di Strict Mode)
+    // Cek sudah submit (prevent double call di Strict Mode)
     if (hasSubmittedRef.current) {
       console.log('⏭️ Already submitted, skipping...');
       return;
