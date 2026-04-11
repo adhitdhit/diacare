@@ -235,7 +235,7 @@ export function EducationPage() {
       )}
 
       {/* WRAPPER DENGAN MARGIN DINAMIS */}
-      <div className={`transition-all duration-300 ${isSidebarOpen ? 'ml-72' : 'ml-0'}`}>
+      <div className={`transition-all duration-300 flex flex-col min-h-screen ${isSidebarOpen ? 'ml-72' : 'ml-0'}`}>
         
         {/* Navigation Bar */}
         <nav className="bg-white shadow-md sticky top-0 z-30">
@@ -271,7 +271,7 @@ export function EducationPage() {
         </nav>
 
         {/* Main Content */}
-        <div className="p-6">
+        <div className="p-6 flex-1">
           {/* Header dengan Tombol Kembali */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
