@@ -156,7 +156,7 @@ export function EducationPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-orange-50">
       
-      {/* ✅ SIDEBAR DENGAN LAYOUT FLEKSIBEL */}
+      {/* SIDEBAR DENGAN LAYOUT FLEKSIBEL */}
       <aside className={`fixed left-0 top-0 h-full w-72 bg-white border-r-2 border-red-100 shadow-lg z-50 transition-transform duration-300 ease-in-out flex flex-col ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
@@ -234,7 +234,7 @@ export function EducationPage() {
         </button>
       )}
 
-      {/* ✅ WRAPPER DENGAN MARGIN DINAMIS */}
+      {/* WRAPPER DENGAN MARGIN DINAMIS */}
       <div className={`transition-all duration-300 ${isSidebarOpen ? 'ml-72' : 'ml-0'}`}>
         
         {/* Navigation Bar */}
@@ -285,7 +285,7 @@ export function EducationPage() {
                 </div>
               </div>
               
-              {/* ✅ TOMBOL KEMBALI */}
+              {/* TOMBOL KEMBALI */}
               <Button
                 onClick={() => navigate(-1)}
                 variant="outline"
@@ -475,6 +475,7 @@ export function EducationPage() {
 
         {/* Footer */}
         <div className="bg-gradient-to-r from-red-900 via-red-800 to-orange-900 text-white py-12 px-4 mt-20">
+          <footer className="bg-gradient-to-r from-red-900 via-red-800 to-orange-900 text-white py-8 px-4 mt-auto"></footer>
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-3 gap-8 mb-8">
               <div>
