@@ -16,15 +16,19 @@ import pregnancyImage from "@/assets/hamil.jpg";
 import familyImage from "@/assets/family.jpg";
  // @ts-ignore
 import skinImage from "@/assets/skin.jfif";
+ // @ts-ignore
+import glukosaImage from "@/assets/gula.jfif";
+ // @ts-ignore
+import diabetesImage from "@/assets/diabetes.jpg";
 
 const educationData = {
   pengertian: {
     title: 'Apa itu Diabetes Mellitus?',
     content: 'Diabetes Mellitus adalah penyakit metabolik kronis yang ditandai dengan tingginya kadar gula (glukosa) dalam darah. Kondisi ini terjadi ketika tubuh tidak dapat memproduksi insulin yang cukup atau tidak dapat menggunakan insulin secara efektif.',
-    image: 'https://images.unsplash.com/photo-1551076805-e1869033e561?w=600&h=400&fit=crop',
+    image: diabetesImage,
     stats: [
-      { label: 'Penderita di Dunia', value: '463 Juta' },
-      { label: 'Di Indonesia', value: '10.7 Juta' },
+      { label: 'Penderita di Dunia Menurut IDF', value: '588 Juta' },
+      { label: 'Di Indonesia', value: '20,4 Juta' },
       { label: 'Tidak Menyadari', value: '50%' },
     ]
   },
@@ -375,7 +379,7 @@ export function EducationPage() {
     {/* 1. Glukosa */}
     <Card className="border-2 border-red-100 overflow-hidden hover:shadow-xl transition-all group hover:-translate-y-1">
       <div className="h-44 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=400&h=300&fit=crop" alt="Blood Glucose" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+        <img src={glukosaImage} alt="gula" className="w-full h-44 object-cover" />
       </div>
       <CardContent className="p-4">
         <h3 className="font-bold text-lg text-gray-900 mb-2">Glukosa Darah</h3>
