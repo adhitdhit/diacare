@@ -238,14 +238,14 @@ export function ResultsPage() {
     }
   }, [predictionId, prediction?.status]); // 
 
-  // 4️⃣ Refresh button 
+  // Refresh button 
   const handleRefresh = () => {
     if (predictionId) {
       checkPredictionStatus(predictionId);
     }
   };
 
-  // 5️⃣ PDF Export (kode sama, tidak diubah)
+  // PDF Export 
 
   const handlePrintPDF = () => {
   if (!prediction || !parameters) {
@@ -288,7 +288,7 @@ export function ResultsPage() {
   pdf.text(`Tanggal: ${reportDate}`, margin, yPos);
   yPos += 10;
 
-  // === RISK SCORE ===
+  
   // === SKOR RISIKO (BOX DENGAN BACKGROUND) ===
 if (prediction.status === 'completed' && prediction.Risk_Score !== null) {
   // Tentukan warna berdasarkan risk level
@@ -320,7 +320,7 @@ if (prediction.status === 'completed' && prediction.Risk_Score !== null) {
   yPos += 25;
 }
 
-// === STATUS (dengan separator yang jelas) ===
+// === STATUS ) ===
 pdf.setDrawColor(220, 38, 38);
 pdf.setLineWidth(0.5);
 pdf.line(margin, yPos, pageWidth - margin, yPos);
@@ -411,13 +411,13 @@ yPos += 12;
         yPos = margin;
       }
 
-      // ✅ Bersihkan teks: hapus emoji, quote, dan nomor lama
+      // Bersihkan teks: hapus emoji, quote, dan nomor lama
       const cleanRec = rec
         .replace(/[✅⚠️🔴🚨'"`]/g, '')
         .replace(/^\d+\.\s*/, '') // Hapus nomor lama jika ada
         .trim();
       
-      // ✅ Tambahkan numbering baru (1., 2., 3., dst)
+      // Tambahkan numbering baru (1., 2., 3., dst)
       const numberedRec = `${index + 1}. ${cleanRec}`;
       
       // Potong teks panjang agar tidak keluar margin
@@ -559,7 +559,7 @@ if (isLoading) {
           
           <CardContent className="space-y-6 pt-6">
             
-            {/* Risk Score - HANYA jika completed */}
+            {/* Risk Score Completed*/}
             {isCompleted && colors && (
               <>
                 <div className={`text-center p-6 ${colors.light} rounded-2xl border-2 ${colors.border}`}>

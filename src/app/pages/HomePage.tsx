@@ -493,11 +493,11 @@ export function HomePage() {
 
                   <div className="grid grid-cols-3 gap-4">
                     <div className="p-4 bg-white border-2 border-red-100 rounded-xl hover:border-red-300 transition-all duration-300 text-center">
-                      <div className="text-2xl font-bold text-red-600 mb-1">463 Juta</div>
+                      <div className="text-2xl font-bold text-red-600 mb-1">588 Juta</div>
                       <div className="text-xs text-gray-600">Penderita di dunia</div>
                     </div>
                     <div className="p-4 bg-white border-2 border-orange-100 rounded-xl hover:border-orange-300 transition-all duration-300 text-center">
-                      <div className="text-2xl font-bold text-orange-600 mb-1">10.7 Juta</div>
+                      <div className="text-2xl font-bold text-orange-600 mb-1">20,4 Juta</div>
                       <div className="text-xs text-gray-600">Di Indonesia</div>
                     </div>
                     <div className="p-4 bg-white border-2 border-red-100 rounded-xl hover:border-red-300 transition-all duration-300 text-center">
